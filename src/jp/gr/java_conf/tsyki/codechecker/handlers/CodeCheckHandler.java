@@ -6,13 +6,20 @@ import java.util.Collection;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IParent;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
+
+import jp.gr.java_conf.tsyki.codechecker.visitor.StructPrintVisitor;
+
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeSelection;
@@ -73,9 +80,13 @@ public class CodeCheckHandler extends AbstractHandler {
 			Object selected = ((TreeSelection) selection).getFirstElement();
 			addCompilationUnits(selected, targetJavaFiles);
 		}
-		// 取得したファイル名をダイアログで出力
-		showTargetJavaFiles(event, targetJavaFiles);
-
+		ASTParser parser = ASTParser.newParser(AST.JLS17);
+		for (ICompilationUnit targetJavaFile : targetJavaFiles) {
+			parser.setSource(targetJavaFile);
+			ASTNode node = parser.createAST(new NullProgressMonitor());
+			StructPrintVisitor visitor = new StructPrintVisitor();
+			node.accept(visitor);
+		}
 		return null;
 	}
 
