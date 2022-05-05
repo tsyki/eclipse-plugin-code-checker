@@ -20,7 +20,7 @@ import org.eclipse.jface.viewers.TreeSelection;
 public class CodeCheckHandler extends AbstractHandler {
 
 	// 配下のICompilationUnitを再帰的に引数のcompilationUnitsに追加する
-	private void addCompiliationUnits(Object target, Collection<ICompilationUnit> compilationUnits) {
+	private void addCompilationUnits(Object target, Collection<ICompilationUnit> compilationUnits) {
 		// javaファイル選択時のtargetの型はCompilationUnitであり、そのまま追加
 		// NOTE CompilationUnitはIParentも実装しているため先に判定
 		if(target instanceof ICompilationUnit) {
@@ -42,7 +42,7 @@ public class CodeCheckHandler extends AbstractHandler {
 				return;
 			}
 			for(IJavaElement child: children) {
-				addCompiliationUnits(child, compilationUnits);
+				addCompilationUnits(child, compilationUnits);
 			}
 		}
 
@@ -71,7 +71,7 @@ public class CodeCheckHandler extends AbstractHandler {
 		// 選択された対象配下のjavaファイルの情報を取得
 		if(selection instanceof TreeSelection) {
 			Object selected = ((TreeSelection) selection).getFirstElement();
-			addCompiliationUnits(selected, targetJavaFiles);
+			addCompilationUnits(selected, targetJavaFiles);
 		}
 		// 取得したファイル名を出力
 		StringBuilder sb = new StringBuilder();
