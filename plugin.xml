@@ -17,7 +17,7 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="jp.gr.java_conf.tsyki.codechecker.handlers.SampleHandler"
+            class="jp.gr.java_conf.tsyki.codechecker.handlers.CodeCheckHandler"
             commandId="code-checker.commands.sampleCommand">
       </handler>
    </extension>
