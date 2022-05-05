@@ -33,29 +33,21 @@
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
-            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+            allPopups="false"
+            locationURI="popup:org.eclipse.jdt.ui.PackageExplorer?after=additions">
          <menu
-               id="code-checker.menus.sampleMenu"
-               label="Sample Menu"
-               mnemonic="M">
-            <command
-                  commandId="code-checker.commands.sampleCommand"
-                  id="code-checker.menus.sampleCommand"
-                  mnemonic="S">
-            </command>
+               id="codechecker.popup.menu"
+               label="MyCodeChecker">
          </menu>
       </menuContribution>
       <menuContribution
-            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
-         <toolbar
-               id="code-checker.toolbars.sampleToolbar">
-            <command
-                  id="code-checker.toolbars.sampleCommand"
-                  commandId="code-checker.commands.sampleCommand"
-                  icon="icons/sample.png"
-                  tooltip="Say hello world">
-            </command>
-         </toolbar>
+            allPopups="false"
+            locationURI="popup:codechecker.popup.menu?after=additions">
+         <command
+               commandId="code-checker.commands.sampleCommand"
+               label="Execute Code Check"
+               style="push">
+         </command>
       </menuContribution>
    </extension>
 
