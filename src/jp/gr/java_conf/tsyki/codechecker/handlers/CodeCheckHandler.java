@@ -15,14 +15,13 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import jp.gr.java_conf.tsyki.codechecker.visitor.StructPrintVisitor;
-
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.TreeSelection;
 
 public class CodeCheckHandler extends AbstractHandler {
 
@@ -30,15 +29,15 @@ public class CodeCheckHandler extends AbstractHandler {
 	private void addCompilationUnits(Object target, Collection<ICompilationUnit> compilationUnits) {
 		// javaファイル選択時のtargetの型はCompilationUnitであり、そのまま追加
 		// NOTE CompilationUnitはIParentも実装しているため先に判定
-		if(target instanceof ICompilationUnit) {
+		if (target instanceof ICompilationUnit) {
 			compilationUnits.add((ICompilationUnit) target);
 		}
 		// プロジェクト選択時のtargetの型はJavaProjectであり、IParentを実装している。
 		// srcフォルダ選択時のtargetの型はPackageFragmentRootであり、IParentを実装している。
 		// srcフォルダ選択時のtargetの型はPackageFragmentであり、IParentを実装している。
-		else if(target instanceof IParent) {
+		else if (target instanceof IParent) {
 			// プロジェクトを選択した際のgetChildrenの中にはjarの中身も含まれており、チェック不要なためその場合は終了する
-			if(isBinaryPackage(target)) {
+			if (isBinaryPackage(target)) {
 				return;
 			}
 			IJavaElement[] children;
@@ -48,7 +47,7 @@ public class CodeCheckHandler extends AbstractHandler {
 				e.printStackTrace();
 				return;
 			}
-			for(IJavaElement child: children) {
+			for (IJavaElement child : children) {
 				addCompilationUnits(child, compilationUnits);
 			}
 		}
@@ -57,9 +56,9 @@ public class CodeCheckHandler extends AbstractHandler {
 
 	// 対象パッケージがjarの中にあるかどうか
 	private boolean isBinaryPackage(Object target) {
-		if(target instanceof IPackageFragmentRoot) {
+		if (target instanceof IPackageFragmentRoot) {
 			try {
-				if(((IPackageFragmentRoot) target).getKind() == IPackageFragmentRoot.K_BINARY) {
+				if (((IPackageFragmentRoot) target).getKind() == IPackageFragmentRoot.K_BINARY) {
 					return true;
 				}
 			} catch (JavaModelException e) {
@@ -76,7 +75,7 @@ public class CodeCheckHandler extends AbstractHandler {
 		ISelection selection = HandlerUtil.getActiveMenuSelectionChecked(event);
 		Collection<ICompilationUnit> targetJavaFiles = new ArrayList<>();
 		// 選択された対象配下のjavaファイルの情報を取得
-		if(selection instanceof TreeSelection) {
+		if (selection instanceof TreeSelection) {
 			Object selected = ((TreeSelection) selection).getFirstElement();
 			addCompilationUnits(selected, targetJavaFiles);
 		}
@@ -93,14 +92,11 @@ public class CodeCheckHandler extends AbstractHandler {
 	private void showTargetJavaFiles(ExecutionEvent event, Collection<ICompilationUnit> targetJavaFiles)
 			throws ExecutionException {
 		StringBuilder sb = new StringBuilder();
-		for(ICompilationUnit targetJavaFile : targetJavaFiles) {
+		for (ICompilationUnit targetJavaFile : targetJavaFiles) {
 			sb.append(targetJavaFile.getElementName());
 			sb.append("\n");
 		}
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
-		MessageDialog.openInformation(
-				window.getShell(),
-				"Selected",
-				sb.toString());
+		MessageDialog.openInformation(window.getShell(), "Selected", sb.toString());
 	}
 }
