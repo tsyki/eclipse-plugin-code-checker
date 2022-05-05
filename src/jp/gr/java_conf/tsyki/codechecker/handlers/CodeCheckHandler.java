@@ -73,7 +73,14 @@ public class CodeCheckHandler extends AbstractHandler {
 			Object selected = ((TreeSelection) selection).getFirstElement();
 			addCompilationUnits(selected, targetJavaFiles);
 		}
-		// 取得したファイル名を出力
+		// 取得したファイル名をダイアログで出力
+		showTargetJavaFiles(event, targetJavaFiles);
+
+		return null;
+	}
+
+	private void showTargetJavaFiles(ExecutionEvent event, Collection<ICompilationUnit> targetJavaFiles)
+			throws ExecutionException {
 		StringBuilder sb = new StringBuilder();
 		for(ICompilationUnit targetJavaFile : targetJavaFiles) {
 			sb.append(targetJavaFile.getElementName());
@@ -84,7 +91,5 @@ public class CodeCheckHandler extends AbstractHandler {
 				window.getShell(),
 				"Selected",
 				sb.toString());
-
-		return null;
 	}
 }
