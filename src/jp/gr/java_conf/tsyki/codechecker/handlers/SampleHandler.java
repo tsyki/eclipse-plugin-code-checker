@@ -1,4 +1,4 @@
-package codechecker.handlers;
+package jp.gr.java_conf.tsyki.codechecker.handlers;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;

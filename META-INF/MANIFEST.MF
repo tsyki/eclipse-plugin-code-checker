@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Code-checker
 Bundle-SymbolicName: code-checker;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: code_checker.Activator
+Bundle-Activator: jp.gr.java_conf.tsyki.codechecker.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-17

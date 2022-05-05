@@ -1,4 +1,4 @@
-package code_checker;
+package jp.gr.java_conf.tsyki.codechecker;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
