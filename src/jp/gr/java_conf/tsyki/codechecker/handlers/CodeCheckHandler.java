@@ -21,6 +21,7 @@ import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import jp.gr.java_conf.tsyki.codechecker.visitor.LongMethodNameCheckVisitor;
 import jp.gr.java_conf.tsyki.codechecker.visitor.StructPrintVisitor;
 
 public class CodeCheckHandler extends AbstractHandler {
@@ -83,8 +84,12 @@ public class CodeCheckHandler extends AbstractHandler {
 		for (ICompilationUnit targetJavaFile : targetJavaFiles) {
 			parser.setSource(targetJavaFile);
 			ASTNode node = parser.createAST(new NullProgressMonitor());
+			// ASTÇÃç\ë¢ÇèoóÕÇ∑ÇÈó·
 			StructPrintVisitor visitor = new StructPrintVisitor();
 			node.accept(visitor);
+			// åxçêÇèoóÕÇ∑ÇÈó·
+			LongMethodNameCheckVisitor checkVisitor = new LongMethodNameCheckVisitor(targetJavaFile, 30);
+			node.accept(checkVisitor);
 		}
 		return null;
 	}
