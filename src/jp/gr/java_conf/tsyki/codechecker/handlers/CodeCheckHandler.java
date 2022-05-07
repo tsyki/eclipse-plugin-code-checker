@@ -6,6 +6,8 @@ import java.util.Collection;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
@@ -82,6 +84,8 @@ public class CodeCheckHandler extends AbstractHandler {
 		}
 		ASTParser parser = ASTParser.newParser(AST.JLS17);
 		for (ICompilationUnit targetJavaFile : targetJavaFiles) {
+			// 事前に既存のマーカーを削除
+			deleteMarkers(targetJavaFile);
 			parser.setSource(targetJavaFile);
 			ASTNode node = parser.createAST(new NullProgressMonitor());
 			// ASTの構造を出力する例
@@ -92,6 +96,19 @@ public class CodeCheckHandler extends AbstractHandler {
 			node.accept(checkVisitor);
 		}
 		return null;
+	}
+
+	private void deleteMarkers(ICompilationUnit targetJavaFile) {
+		// XXX 他の機能で追加されたマーカーは削除するべきでないが、一旦考えない
+		try {
+			IMarker[] oldMarkers = targetJavaFile.getCorrespondingResource().findMarkers(null, false,
+					IResource.DEPTH_INFINITE);
+			for (IMarker oldMarker : oldMarkers) {
+				oldMarker.delete();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void showTargetJavaFiles(ExecutionEvent event, Collection<ICompilationUnit> targetJavaFiles)
