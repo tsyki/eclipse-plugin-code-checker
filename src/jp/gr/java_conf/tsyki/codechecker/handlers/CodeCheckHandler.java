@@ -23,6 +23,7 @@ import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import jp.gr.java_conf.tsyki.codechecker.visitor.CodeCheckerConstants;
 import jp.gr.java_conf.tsyki.codechecker.visitor.LongMethodNameCheckVisitor;
 import jp.gr.java_conf.tsyki.codechecker.visitor.StructPrintVisitor;
 
@@ -99,10 +100,9 @@ public class CodeCheckHandler extends AbstractHandler {
 	}
 
 	private void deleteMarkers(ICompilationUnit targetJavaFile) {
-		// XXX 他の機能で追加されたマーカーは削除するべきでないが、一旦考えない
 		try {
-			IMarker[] oldMarkers = targetJavaFile.getCorrespondingResource().findMarkers(null, false,
-					IResource.DEPTH_INFINITE);
+			IMarker[] oldMarkers = targetJavaFile.getCorrespondingResource()
+					.findMarkers(CodeCheckerConstants.MARKER_TYPE, false, IResource.DEPTH_ZERO);
 			for (IMarker oldMarker : oldMarkers) {
 				oldMarker.delete();
 			}

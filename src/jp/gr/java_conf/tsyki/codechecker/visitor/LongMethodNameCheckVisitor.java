@@ -27,7 +27,7 @@ public class LongMethodNameCheckVisitor extends ASTVisitor {
 		if (node.getParent() instanceof MethodDeclaration) {
 			if (node.getIdentifier().length() > maxLength) {
 				try {
-					IMarker marker = unit.getCorrespondingResource().createMarker(IMarker.PROBLEM);
+					IMarker marker = unit.getCorrespondingResource().createMarker(CodeCheckerConstants.MARKER_TYPE);
 					marker.setAttribute(IMarker.MESSAGE, "メソッド名は" + maxLength + "文字以内としてください。");
 					marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_WARNING);
 					marker.setAttribute(IMarker.LINE_NUMBER,

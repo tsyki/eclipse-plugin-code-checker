@@ -50,5 +50,12 @@
          </command>
       </menuContribution>
    </extension>
+   <extension
+         id="CodeCheckerProblem"
+         name="MyCodeChecker Problem"
+         point="org.eclipse.core.resources.markers">
+         <super type="org.eclipse.core.resources.problemmarker" />
+         <persistent value="false" />
+   </extension>
 
 </plugin>
