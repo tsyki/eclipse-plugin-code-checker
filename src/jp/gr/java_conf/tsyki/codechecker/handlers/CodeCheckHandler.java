@@ -23,6 +23,7 @@ import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import jp.gr.java_conf.tsyki.codechecker.visitor.ArgumentTypeCheckVisitor;
 import jp.gr.java_conf.tsyki.codechecker.visitor.CodeCheckerConstants;
 import jp.gr.java_conf.tsyki.codechecker.visitor.LongMethodNameCheckVisitor;
 import jp.gr.java_conf.tsyki.codechecker.visitor.StructPrintVisitor;
@@ -88,6 +89,8 @@ public class CodeCheckHandler extends AbstractHandler {
 			// 事前に既存のマーカーを削除
 			deleteMarkers(targetJavaFile);
 			parser.setSource(targetJavaFile);
+			// resolveBindingを使えるように
+			parser.setResolveBindings(true);
 			ASTNode node = parser.createAST(new NullProgressMonitor());
 			// ASTの構造を出力する例
 			StructPrintVisitor visitor = new StructPrintVisitor();
@@ -95,6 +98,9 @@ public class CodeCheckHandler extends AbstractHandler {
 			// 警告を出力する例
 			LongMethodNameCheckVisitor checkVisitor = new LongMethodNameCheckVisitor(targetJavaFile, 30);
 			node.accept(checkVisitor);
+			// 親クラスを再帰的に取得する例
+			ArgumentTypeCheckVisitor bindingCheckVisitor = new ArgumentTypeCheckVisitor(targetJavaFile);
+			node.accept(bindingCheckVisitor);
 		}
 		return null;
 	}
