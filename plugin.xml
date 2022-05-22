@@ -38,16 +38,12 @@
          <menu
                id="codechecker.popup.menu"
                label="MyCodeChecker">
+               <command
+	               commandId="codechecker.commands.CodeCheckCommand"
+    	           label="Execute Code Check"
+                   style="push">
+               </command>
          </menu>
-      </menuContribution>
-      <menuContribution
-            allPopups="false"
-            locationURI="popup:codechecker.popup.menu?after=additions">
-         <command
-               commandId="codechecker.commands.CodeCheckCommand"
-               label="Execute Code Check"
-               style="push">
-         </command>
       </menuContribution>
    </extension>
    <extension
