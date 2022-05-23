@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jdt.core.dom.LambdaExpression;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
+import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
@@ -48,7 +49,7 @@ public class ArgumentTypeCheckVisitor extends ASTVisitor {
 			ITypeBinding parameterType = parameterTypes[i];
 			// 引数の型がResponderである場合、実引数の型がLogicResponderかどうかをチェック
 			if (RESPONDER_FQCN.equals(parameterType.getQualifiedName())) {
-				// 匿名クラスの場合はClassInstanceCreation、変数の場合はSimpleName、ラムダ式の場合はLamdaExpression、メソッドの場合はMethodInvocationであり、いずれもExpressionである
+				// 匿名クラスの場合はClassInstanceCreation、変数の場合はSimpleName/QualifiedName、ラムダ式の場合はLamdaExpression、メソッドの場合はMethodInvocationであり、いずれもExpressionである
 				Expression arg = (Expression) node.arguments().get(i);
 				// メソッドの結果が渡されている場合は実際の型の判別ができないため、チェックしない
 				if (arg instanceof MethodInvocation) {
@@ -57,8 +58,8 @@ public class ArgumentTypeCheckVisitor extends ASTVisitor {
 				// 実引数が変数かつ、ローカル変数の場合、その変数に代入されている型がLogicResponderであるかチェック
 				// フィールドやメソッドの引数の場合はLogicResponderが渡されるかは不明であるためチェックしない。
 				// ローカル変数の場合でもnewした値を設定するのではなく、メソッドの呼び出し結果を代入する場合はチェックしない
-				if (arg instanceof SimpleName) {
-					SimpleName variable = (SimpleName) arg;
+				if (arg instanceof Name) {
+					Name variable = (Name) arg;
 					IBinding bind = variable.resolveBinding();
 					if (bind instanceof IVariableBinding) {
 						IVariableBinding varBind = (IVariableBinding) bind;

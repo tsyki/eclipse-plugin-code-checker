@@ -2,6 +2,7 @@ package example;
 
 public class SampleLogic implements Logic{
 	private Responder fieldResponder;
+	private static Responder staticResponder;
 	
 	@Override
 	public void run() {
@@ -12,6 +13,7 @@ public class SampleLogic implements Logic{
 		Responder localResponderByField = fieldResponder;
 		Util.save(localResponderByField); // OK(フィールドは判定対象外)
 		Util.save(fieldResponder); // OK(フィールドは判定対象外)
+		Util.save(SampleLogic.staticResponder); // OK(フィールドは判定対象外。QualifiedName)
 		Responder localResponderByMethod = getResponder();
 		Util.save(localResponderByMethod); // OK(メソッドは判定対象外)
 		{
